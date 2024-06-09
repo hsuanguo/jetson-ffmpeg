@@ -35,8 +35,6 @@ git clone git://source.ffmpeg.org/ffmpeg.git -b "${ffmpeg_version}" --depth=1
 cp -r ${repo_dir}/ffmpeg_dev/6.1/* ffmpeg/
 cp -r ${repo_dir}/ffmpeg_dev/common/* ffmpeg/
 cd ffmpeg
-git add -A .
-git diff --cached > ./ffmpeg_patches/ffmpeg6.1_nvmpi.patch
 
 # if enable_gpl is true, then enable gpl
 if [ "${enable_gpl}" = "true" ]; then
@@ -44,7 +42,6 @@ if [ "${enable_gpl}" = "true" ]; then
 ./configure \
   --enable-nvmpi \
   --disable-stripping \
-  --enable-avresample \
   --disable-filter=resample \
   --enable-gnutls \
   --enable-ladspa \
@@ -103,9 +100,7 @@ if [ "${enable_gpl}" = "true" ]; then
 else
 
 ./configure \
-  --enable-nvmpi \
   --disable-stripping \
-  --enable-avresample \
   --disable-filter=resample \
   --enable-gnutls \
   --enable-ladspa \
