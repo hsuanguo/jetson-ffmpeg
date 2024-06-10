@@ -13,7 +13,14 @@ cd "${repo_dir}"
 
 enable_gpl=${1:-"false"}
 
-install_dir=${repo_dir}/build/install/usr/local
+install_dir="/usr"
+
+dest_pkg_dir="${repo_dir}/installed"
+
+# create dest_pkg_dir if not exist
+if [ ! -d "${dest_pkg_dir}" ]; then
+  mkdir -p "${dest_pkg_dir}"
+fi
 
 ffmpeg_version="n6.1.1"
 
@@ -21,8 +28,8 @@ ffmpeg_version="n6.1.1"
 if [ -d build ]; then
   rm -rf build
 fi
-mkdir -p ${install_dir}
 
+mkdir build
 cd build
 
 cmake ..
@@ -100,6 +107,7 @@ if [ "${enable_gpl}" = "true" ]; then
 else
 
 ./configure \
+  --enable-nvmpi \
   --disable-stripping \
   --disable-filter=resample \
   --enable-gnutls \
@@ -150,4 +158,5 @@ else
 fi
 
 make -j$(nproc)
+DESTDIR=${dest_pkg_dir} make install
 make install
